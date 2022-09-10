@@ -1,4 +1,5 @@
-from tkinter import Text, END, Toplevel, ttk, StringVar
+import json
+from tkinter import Text, END, Toplevel, ttk, StringVar, Tk
 import requests
 
 
@@ -25,7 +26,8 @@ class ShowReq:
         self.auth = None
 
     def show(self, req='http://127.0.0.0/api', method='GET', token=None):
-        __MainWindow = Toplevel()
+        # __MainWindow = Toplevel()
+        __MainWindow = Tk()
         __MainWindow.geometry('900x350')
         __MainWindow.wm_title('request')
         __MainWindow.rowconfigure(3, weight=3)
@@ -76,6 +78,22 @@ class ShowReq:
             self.comboBox.current(2)
         elif method == 'DELETE':
             self.comboBox.current(3)
+        __MainWindow.mainloop()
+    def get_text_re(self, array, splash=''):
+        text = ''
+        if not type(array) is str:
+            for i in array:
+                if type(array[i]) is dict:
+                    text += f'{splash}{i}:\n'
+                    text += self.get_text_re(array[i], '\t')
+                elif type(array[i]) is list:
+                    for j in array[i]:
+                        text += self.get_text_re(j, '\t')
+                else:
+                    text += f'{splash}{i}: {array[i]}\n'
+        else:
+            text += splash + array
+        return text
 
     def send(self):
         methods = self.select_method.get()
@@ -84,21 +102,31 @@ class ShowReq:
         if methods == 'GET':
             try:
                 temp = requests.get(url, auth=BearerAuth(auth)).json()
-                str(temp[0]).replace('{', '{\n')
-                str(temp[0]).replace('}', '}\n')
-                str(temp[0]).replace(',', ',\n')
+                text = self.get_text_re(temp)
                 self.responseText.delete(1.0, END)
-                self.responseText.insert(1.0, temp)
+                self.responseText.insert(1.0, text)
             except:
-                temp = requests.get(url, auth=BearerAuth(auth))
+                temp = requests.get(url, auth=BearerAuth(auth)).json()
+                text = self.get_text_re(temp)
                 self.responseText.delete(1.0, END)
-                self.responseText.insert(1.0, temp.text)
-        # elif methods == 'POST':
-        #     temp = requests.post(self.req, headers={"Authorization" : self.auth.get()}).json()
-        # elif methods == 'PUT':
-        #     temp = requests.put(self.req, headers={"Authorization" : self.auth.get()}).json()
-        # elif methods == 'DELETE':
-        #     temp = requests.delete(self.req, headers={"Authorization" : self.auth.get()}).json()
+                self.responseText.insert(1.0, text)
+        elif methods == 'POST':
+            tmp = self.dataText.get('1.0', END)
+            temp = requests.post(url, headers={"Authorization": self.auth.get()}, data=json.loads(tmp)).json()
+            text = self.get_text_re(temp)
+            self.responseText.delete(1.0, END)
+            self.responseText.insert(1.0, text)
+        elif methods == 'PUT':
+            tmp = self.dataText.get('1.0', END)
+            temp = requests.put(url, headers={"Authorization": self.auth.get()}, data=json.loads(tmp)).json()
+            text = self.get_text_re(temp)
+            self.responseText.delete(1.0, END)
+            self.responseText.insert(1.0, text)
+        elif methods == 'DELETE':
+            temp = requests.delete(url, headers={"Authorization": self.auth.get()}).json()
+            text = self.get_text_re(temp)
+            self.responseText.delete(1.0, END)
+            self.responseText.insert(1.0, text)
 
 
 showReq = ShowReq()

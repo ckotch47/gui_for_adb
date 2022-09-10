@@ -37,6 +37,21 @@ def return_value_from_string(str_is):
     return [x for x in p if x]
 
 
+class m_button:
+    left = 'Button-1'
+    right = 'Button-3'
+    center = 'Button-2'
+    double_left = 'Double-1'
+    double_right = 'Double-2'
+
+    def __init__(self):
+        if sys.platform == 'darwin':
+            self.left = 'Button-0'
+            self.right = 'Button-2'
+            self.center = 'Button-1'
+            self.double_left = 'Double-0'
+            self.double_right = 'Double-1'
+
 class MyGUI:
     count = 0
 
@@ -73,15 +88,17 @@ class MyGUI:
         self._tabControlList = 0
         self._tabControlParam = 1
 
+        self.m_btn = m_button()
+
         if sys.platform == 'linux' or sys.platform == 'linux2':
-            self.ADB_Path = os.getcwd() + '/linux_adb'
+            self.ADB_Path = 'adb'
         elif sys.platform == 'darwin':
-            self.ADB_Path = os.getcwd() + '/OSX_adb'
+            self.ADB_Path = 'adb'
         elif sys.platform == 'win32':
-            self.ADB_Path = os.getcwd() + '/win32_adb'
+            self.ADB_Path = 'adb'
+
 
     def init_root(self):
-        # self._root = Tk()
         self._root = Tk()
 
         self._root.title("GUI на Python")
@@ -126,7 +143,7 @@ class MyGUI:
                 self.table.yview_moveto((i - 1) / self.count)
         return True
 
-    def OnDoubleClickOnTableOne(self, event):
+    def OnDoubleClickOnTableOne(self):
         item = self.table.selection()[0]
         self._tabControl.select(self._tabControlParam)
         # self.PIDVar = item
@@ -151,12 +168,12 @@ class MyGUI:
         self.table = ttk.Treeview(self.__tabOne, selectmode='extended')
         self.table['columns'] = ['UID', 'PID', 'PPID', 'C', 'STIME', 'TTY', 'TIME', 'CMD', 'SD']
         # bind double-click for item in table
-        self.table.bind('<Double-1>', self.OnDoubleClickOnTableOne)
+        self.table.bind(f'<{self.m_btn.double_left}>', self.OnDoubleClickOnTableOne)
         self.tabOneTable_columnSettings()
 
         self.yscrollbar = ttk.Scrollbar(self.__tabOne, orient='vertical', command=self.table.yview)
         self.table.configure(yscrollcommand=self.yscrollbar.set)
-        self.table.bind('<Button-3>', self.doPopup_tabOne)
+        self.table.bind(f'<{self.m_btn.right}>', self.doPopup_tabOne)
         self.table.grid(padx=(5, 20), pady=5, sticky="nsew", columnspan=2)
 
         self.yscrollbar.grid(row=1, column=1, sticky='nse', rowspan=1)
@@ -188,7 +205,7 @@ class MyGUI:
         self.table.heading("CMD", text="CMD", anchor=CENTER)
         self.table.heading("SD", text="", anchor=CENTER)
 
-    # get proccess from linux_adb
+    # get proccess from adb
     def logcatcommand(self):
         self.popen = subprocess.Popen([self.ADB_Path + "/adb", "shell", "ps", "-Af"], shell=False,
                                       stdout=subprocess.PIPE)
@@ -369,8 +386,8 @@ class MyGUI:
         self.tableTagOrRegx.heading('LIBRARY', text="LIBRARY", anchor=CENTER)
         self.tableTagOrRegx.heading('MESSAGE', text="MESSAGE", anchor=CENTER)
 
-        self.tableTagOrRegx.bind('<Button-3>', self.doPopup_tabTwo)
-        self.tableTagOrRegx.bind('<Double-1>', self.OnDoubleClickOnTableTwo)
+        self.tableTagOrRegx.bind(f'<{self.m_btn.right}>', self.doPopup_tabTwo)
+        self.tableTagOrRegx.bind(f'<{self.m_btn.double_left}>', self.OnDoubleClickOnTableTwo)
 
         self.yscrollbarTwo = ttk.Scrollbar(self.__tabTwo, orient='vertical', command=self.tableTagOrRegx.yview)
         self.tableTagOrRegx.configure(yscrollcommand=self.yscrollbarTwo.set)
@@ -486,5 +503,4 @@ class MyGUI:
 
 myGUI = MyGUI()
 if __name__ == "__main__":
-    keygen(os.getcwd() + '/adbkey')
     myGUI.runMain()
