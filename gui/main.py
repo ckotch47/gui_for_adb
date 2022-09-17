@@ -1,19 +1,25 @@
 import os
 import sys
 from tkinter import messagebox, Tk
-
-is_theme = False
-try:
-    from ttkthemes.themed_tk import ThemedTk
-except:
-    is_theme = False
-
+from configparser import ConfigParser
 from tabone.tabone_gui import *
 from tabtwo.tabtwo_gui import *
 
 from text.text_en import *
 import module.lock as app_lock
 
+config = ConfigParser()
+config.read('config.ini')
+is_theme = False
+
+if config.get('DEFAULT', 'use_theme') == 'yes':
+    is_theme = True
+
+
+try:
+    from ttkthemes.themed_tk import ThemedTk
+except:
+    is_theme = False
 
 class main_gui:
     def __init__(self):
@@ -24,10 +30,13 @@ class main_gui:
         self.style = None
 
 
-
     def init_root(self):
-        if is_theme:
-            self._root = ThemedTk(theme="arc")
+        theme = config.get('DEFAULT', 'theme_name')
+        if is_theme and theme != '':
+            try:
+                self._root = ThemedTk(theme=theme)
+            except:
+                self._root = Tk()
         else:
             self._root = Tk()
 

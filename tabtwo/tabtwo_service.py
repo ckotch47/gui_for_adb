@@ -1,6 +1,7 @@
 import os
 import subprocess
 import threading
+from configparser import ConfigParser
 from tkinter import messagebox, SEL, INSERT
 from text.text_en import main_text, text_tab_two
 import module.lock as app_lock
@@ -9,7 +10,13 @@ import pyperclip
 
 class service:
     def __init__(self, table=None, text_box=None):
-        self.ADB_Path: str = ''
+        config = ConfigParser()
+        config.read('config.ini')
+        if config.get('DEFAULT', 'adb_path') != 'no':
+            self.ADB_Path = str(config.get('DEFAULT', 'adb_path'))
+        else:
+            self.ADB_Path = ''
+
         self.input_find = None
         self.table = table
         self.text_box = text_box

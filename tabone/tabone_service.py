@@ -1,16 +1,21 @@
 import subprocess
+from configparser import ConfigParser
 from tkinter import messagebox
-
 import pyperclip
-
 from text.text_en import *
 
 
 class service:
-    def __init__(self, adb_path='', table=None):
+    def __init__(self,  table=None):
+        config = ConfigParser()
+        config.read('config.ini')
+        if config.get('DEFAULT', 'adb_path') != 'no':
+            self.ADB_Path = str(config.get('DEFAULT', 'adb_path'))
+        else:
+            self.ADB_Path = ''
+
         self.count = 0
         self.popen = None
-        self.ADB_Path = adb_path
         self.table = table
         self.input_query = None
 

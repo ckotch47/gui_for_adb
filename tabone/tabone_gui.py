@@ -21,7 +21,7 @@ class tab_one_gui:
         table['columns'] = ['UID', 'PID', 'PPID', 'C', 'STIME', 'TTY', 'TIME', 'CMD', 'SD']
 
         # init service
-        self.service = tab_one_service.service(adb_path='', table=table)
+        self.service = tab_one_service.service(table=table)
 
         # add refresh button
         refresh_btn = ttk.Button(tab, text=text_tab_one.refresh_btn, command=self.service.tabOneRefreshBTN)
