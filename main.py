@@ -1,12 +1,11 @@
 import os
+import re
 import subprocess
 import sys
 import threading
 import tkinter
 from tkinter import *
 from tkinter import ttk
-from adb_shell.auth.keygen import keygen
-import showMassage
 from showReq import showReq
 
 
@@ -52,10 +51,12 @@ class m_button:
             self.double_left = 'Double-0'
             self.double_right = 'Double-1'
 
+
 class MyGUI:
     count = 0
 
     def __init__(self):
+        self.msg_text = None
         self.SavedToken = None
         self.popup_tabOne = None
         self._tabOneRefresh = None
@@ -91,24 +92,24 @@ class MyGUI:
         self.m_btn = m_button()
 
         if sys.platform == 'linux' or sys.platform == 'linux2':
-            self.ADB_Path = 'adb'
+            self.ADB_Path = ''
         elif sys.platform == 'darwin':
-            self.ADB_Path = 'adb'
+            self.ADB_Path = ''
         elif sys.platform == 'win32':
-            self.ADB_Path = 'adb'
-
+            self.ADB_Path = ''
 
     def init_root(self):
         self._root = Tk()
 
-        self._root.title("GUI на Python")
+        self._root.title("Py GUI ADB")
         self._root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self._root.geometry("900x540")
         self.popupInit_tabOne()
         self.popupInit_tabTwo()
 
     def on_closing(self):
         self.stoplog()
-        os.system(self.ADB_Path + "/adb kill-server")
+        os.system(self.ADB_Path + "adb kill-server")
         sys.exit(0)
 
     def tabOneRefreshBTN(self):
@@ -143,13 +144,13 @@ class MyGUI:
                 self.table.yview_moveto((i - 1) / self.count)
         return True
 
-    def OnDoubleClickOnTableOne(self):
+    def OnDoubleClickOnTableOne(self, event):
         item = self.table.selection()[0]
         self._tabControl.select(self._tabControlParam)
         # self.PIDVar = item
-        self.inputPID.delete(0, END)
-        self.inputPID.insert(0, item)
-        self.byPIDCallback()
+        self.inputRegx.delete(0, END)
+        self.inputRegx.insert(0, 'pid:' + item)
+        self.byRegxCallback(event)
 
     # -----------------------------TAB ONE ----------------------------------#
     def tabOne_init(self):
@@ -207,7 +208,7 @@ class MyGUI:
 
     # get proccess from adb
     def logcatcommand(self):
-        self.popen = subprocess.Popen([self.ADB_Path + "/adb", "shell", "ps", "-Af"], shell=False,
+        self.popen = subprocess.Popen([self.ADB_Path + "adb", "shell", "ps", "-Af"], shell=False,
                                       stdout=subprocess.PIPE)
         return iter(self.popen.stdout.readline, b"")
 
@@ -263,15 +264,6 @@ class MyGUI:
             # make sure to release the grab (Tk 8.0a1 only)
             self.popup_tabTwo.grab_release()
 
-    def ShowMassageTabTwoMSG(self):
-        try:
-            textin = self.tableTagOrRegx.selection()
-            textin = self.tableTagOrRegx.item(textin)['values'][-1].replace(':', '').lstrip().rstrip()
-        except:
-            textin = ''
-        finally:
-            showMassage.show(textin)
-
     def ShowMassageTabTwoReq(self):
         try:
             temp = self.tableTagOrRegx.selection()
@@ -290,7 +282,6 @@ class MyGUI:
     def popupInit_tabTwo(self):
         self.popup_tabTwo = tkinter.Menu(self.tableTagOrRegx, tearoff=0)
         self.popup_tabTwo.add_command(command=self.your_copy_tabTwo, label="Copy")
-        self.popup_tabTwo.add_command(command=self.ShowMassageTabTwoMSG, label="Show")
         self.popup_tabTwo.add_command(command=self.ShowMassageTabTwoReq, label="Req")
         self.popup_tabTwo.add_command(command=self.SaveToken, label="Set Bearer")
         self.popup_tabTwo.add_command(command=self.popup_tabTwo.grab_release, label="None")
@@ -313,14 +304,24 @@ class MyGUI:
         self.logTag(self.TagVar.get())
 
     def byRegxCallback(self, event):
-        self.logRegx(self.RegxVar.get())
+        temp = self.RegxVar.get()
+        if temp.find('pid:') == 0 and temp.find('tag:') == -1 and temp.find('re:') == -1:
+            tmp = temp.replace('pid:', '')
+            self.logPid(tmp)
+        elif temp.find('pid:') == -1 and temp.find('tag:') == 0 and temp.find('re:') == -1:
+            tmp = temp.replace('tag:', '')
+            self.logTag(tmp)
+        elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == 0:
+            tmp = temp.replace('re:', '')
+            self.logRegx(tmp)
+        # self.logRegx(self.RegxVar.get())
 
     def byPIDCallback(self, event=None):
         self.logPid(self.PIDVar.get())
 
     # ------- clear logcat history and table
     def clearHistory_logcat(self):
-        os.system(self.ADB_Path + '/adb logcat -c')
+        os.system(self.ADB_Path + 'adb logcat -c')
         clear_all(self.tableTagOrRegx)
 
     # ------- clear logcat history and table END
@@ -334,35 +335,19 @@ class MyGUI:
         self.RegxVar = StringVar()
         self.PIDVar = StringVar()
 
-        labelTag = ttk.Label(self.__tabTwo, text='print by tag')
-        labelTag.grid(row=0, column=0, sticky=N + E, columnspan=1, padx=5, pady=5)
-
-        self.inputTag = ttk.Entry(self.__tabTwo, textvariable=self.TagVar)
-        self.inputTag.bind('<Return>', self.byTagCallback)
-        self.inputTag.grid(row=0, column=1, sticky=N + E, columnspan=1, padx=5, pady=5)
-
-        labelRegx = ttk.Label(self.__tabTwo, text='print by regx')
-        labelRegx.grid(row=0, column=3, sticky=N + W, columnspan=1, padx=5, pady=5)
+        labelRegx = ttk.Label(self.__tabTwo, text='search')  # by pid: tag: re:
+        labelRegx.grid(row=0, column=0, sticky=N + E, columnspan=1, padx=5, pady=5)
 
         self.inputRegx = ttk.Entry(self.__tabTwo, textvariable=self.RegxVar)
-        self.inputRegx.grid(row=0, column=4, sticky=N + W, columnspan=1, padx=5, pady=5)
+        self.inputRegx.grid(row=0, column=1, sticky=N + W + E, columnspan=4, padx=5, pady=5, ipady=3)
         self.inputRegx.bind('<Return>', self.byRegxCallback)
 
-        labelPID = ttk.Label(self.__tabTwo, text='print by PID')
-        labelPID.grid(row=1, column=0, sticky=N + E, columnspan=1, padx=5, pady=5)
-
-        self.inputPID = ttk.Entry(self.__tabTwo, textvariable=self.PIDVar)
-        self.inputPID.grid(row=1, column=1, sticky=N + E, columnspan=1, padx=5, pady=5)
-        self.inputPID.bind('<Return>', self.byPIDCallback)
-
         printBtn = ttk.Button(self.__tabTwo, text='clear', command=self.clearHistory_logcat)
-        printBtn.grid(row=0, column=5, sticky=N + E, columnspan=1, pady=5, padx=5)
+        printBtn.grid(row=0, column=5, sticky=N + W + E, columnspan=1, pady=5, padx=5)
 
         closeBtn = ttk.Button(self.__tabTwo, text='stop', command=self.stoplog)
-        closeBtn.grid(row=1, column=5, sticky=N + E, columnspan=1, pady=5, padx=5)
+        closeBtn.grid(row=0, column=6, sticky=N + W + E, columnspan=1, pady=5, padx=5)
 
-        # label_h = ttk.Label(self.__tabTwo, text='[Ss]ocket ?')
-        # label_h.grid(row=1, column=4, sticky=N + W)
         self.init_tableTwo()
 
     def init_tableTwo(self):
@@ -392,14 +377,19 @@ class MyGUI:
         self.yscrollbarTwo = ttk.Scrollbar(self.__tabTwo, orient='vertical', command=self.tableTagOrRegx.yview)
         self.tableTagOrRegx.configure(yscrollcommand=self.yscrollbarTwo.set)
 
-        self.yscrollbarTwo.grid(row=3, column=7, sticky='nse', rowspan=1)
+        self.yscrollbarTwo.grid(row=2, column=7, sticky='nse', rowspan=3)
         self.yscrollbarTwo.configure(command=self.tableTagOrRegx.yview)
 
-        self.tableTagOrRegx.grid(padx=5, pady=5, sticky="nsew", row=3, columnspan=6)
+        self.tableTagOrRegx.grid(padx=5, pady=5, sticky="nsew", row=2, columnspan=7, rowspan=2)
+
+        self.msg_text = Text(self.__tabTwo, padx=10, pady=10, height=10)
+        self.msg_text.grid(row=4, column=0, sticky=N + W + E + S, columnspan=7, padx=5, pady=5)
 
     def OnDoubleClickOnTableTwo(self, event):
         item = self.tableTagOrRegx.selection()[0]
-        print(self.tableTagOrRegx.item(item))
+        tmp_text = self.tableTagOrRegx.item(item)['values'][-1]
+        self.msg_text.delete(1.0, END)
+        self.msg_text.insert(1.0, tmp_text)
 
     # init tab and table end
 
@@ -407,7 +397,7 @@ class MyGUI:
     def logTag(self, param):
         clear_all(self.tableTagOrRegx)
         self.stoplog()
-        self.popenTag = subprocess.Popen([self.ADB_Path + "/adb", "logcat", "-s", param], shell=False,
+        self.popenTag = subprocess.Popen([self.ADB_Path + "adb", "logcat", "-s", param], shell=False,
                                          stdout=subprocess.PIPE)
         self.printlogTagBool = True
         self.th_tag = threading.Thread(target=self.printlogTag)
@@ -430,7 +420,7 @@ class MyGUI:
     def logRegx(self, param):
         clear_all(self.tableTagOrRegx)
         self.stoplog()
-        self.popenRegx = subprocess.Popen([self.ADB_Path + "/adb", "logcat", "-e", param], shell=False,
+        self.popenRegx = subprocess.Popen([self.ADB_Path + "adb", "logcat", "-e", param], shell=False,
                                           stdout=subprocess.PIPE)
         self.printlogRegxBool = True
         self.th_regx = threading.Thread(target=self.printlogRegx)
@@ -453,7 +443,7 @@ class MyGUI:
     def logPid(self, param):
         clear_all(self.tableTagOrRegx)
         self.stoplog()
-        self.popenPid = subprocess.Popen([self.ADB_Path + "/adb", "logcat", "--pid=" + param], shell=False,
+        self.popenPid = subprocess.Popen([self.ADB_Path + "adb", "logcat", "--pid=" + param], shell=False,
                                          stdout=subprocess.PIPE)
         self.printlogPid = True
         self.th_pid = threading.Thread(target=self.printLogPid)
