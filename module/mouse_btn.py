@@ -10,11 +10,11 @@ class m_button:
 
     def __init__(self):
         if sys.platform == 'darwin':
-            self.left = 'Button-0'
+            self.left = 'Button-1'
             self.right = 'Button-2'
-            self.center = 'Button-1'
-            self.double_left = 'Double-0'
-            self.double_right = 'Double-1'
+            self.center = 'Button-3'
+            self.double_left = 'Double-1'
+            self.double_right = 'Double-2'
 
 
 

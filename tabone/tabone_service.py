@@ -12,7 +12,7 @@ class service:
         if config.get('DEFAULT', 'adb_path') != 'no':
             self.ADB_Path = str(config.get('DEFAULT', 'adb_path'))
         else:
-            self.ADB_Path = ''
+            self.ADB_Path = 'adb/'
 
         self.count = 0
         self.popen = None

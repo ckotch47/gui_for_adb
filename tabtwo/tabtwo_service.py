@@ -15,7 +15,7 @@ class service:
         if config.get('DEFAULT', 'adb_path') != 'no':
             self.ADB_Path = str(config.get('DEFAULT', 'adb_path'))
         else:
-            self.ADB_Path = ''
+            self.ADB_Path = 'adb/'
 
         self.input_find = None
         self.table = table
@@ -80,22 +80,26 @@ class service:
     def callback_start_btn(self, event=None):
         temp: str = self.input_find.get()
         if temp != text_tab_two.placeholder_text:
-            if temp.find('pid:') == 0 and temp.find('tag:') == -1 and temp.find('re:') == -1:
+            if temp.find('pid:') == 0 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find('type:') == -1:
                 tmp = temp.replace('pid:', '')
-                self.main_log('--pid=', tmp)
-            elif temp.find('pid:') == -1 and temp.find('tag:') == 0 and temp.find('re:') == -1:
+                self.main_log(f'--pid={tmp}')
+            elif temp.find('pid:') == -1 and temp.find('tag:') == 0 and temp.find('re:') == -1 and temp.find('type:') == -1:
                 tmp = temp.replace('tag:', '')
                 self.main_log('-s', tmp)
-            elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == 0:
+            elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == 0 and temp.find('type:') == -1:
                 tmp = temp.replace('re:', '')
                 self.main_log('-e', tmp)
             elif temp == 'all' or temp == '*':
                 self.main_log('', '')
+            elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find('type:') == 0:
+                tmp = temp.replace('type:', '')
+                self.main_log(f'*:{tmp.upper()}')
+
 
     # print log
     def main_log(self, method='', param=''):
         self.stop_log()
-        self.subprocess_val = subprocess.Popen([self.ADB_Path + "adb", "logcat", f'{method} {param}'], shell=False,
+        self.subprocess_val = subprocess.Popen([self.ADB_Path + "adb", "logcat", f'{method}', f'{param}'], shell=False,
                                                stdout=subprocess.PIPE)
         self.print_log = True
         app_lock.lock_activate()

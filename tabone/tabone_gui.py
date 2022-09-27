@@ -36,7 +36,7 @@ class tab_one_gui:
         y_scrollbar.configure(command=table.yview)
 
         # add gui element on tab
-        input_query.grid(row=0, column=0, sticky="nwe", padx=5, ipady=3)
+        input_query.grid(row=0, column=0, sticky="nwe", padx=5)
         refresh_btn.grid(row=0, column=1, sticky='nwe')
         table.grid(row=1, column=0, padx=(5, 20), pady=5, sticky="nsew", columnspan=2)
         y_scrollbar.grid(row=1, column=1, sticky='nse', rowspan=1)

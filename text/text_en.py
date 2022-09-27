@@ -1,15 +1,15 @@
 class text_tab_one:
-    name = 'tab one'
+    name = 'ps'
     refresh_btn = 'refresh'
     placeholder_text = 'enter package name'
 
 class text_tab_two:
-    name = 'tab two'
+    name = 'log'
     search_label = 'search'
     clear_btn = 'clear'
     stop_btn = 'stop'
     start_btn = 'start'
-    placeholder_text = 'pid:0000 || tag:library || re:[Ss]ocket || all or * for all message'
+    placeholder_text = 'pid:0000 || tag:library || re:[Ss]ocket || type:(w,d,i,v,e,f,s) all or * for all message'
 
 
 class main_text:

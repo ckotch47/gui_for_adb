@@ -50,7 +50,7 @@ class tab_two_gui:
         # add message box
 
         # row 0
-        input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0), ipady=3)
+        input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0))
         start_btn.grid(row=0, column=1, sticky='ne', padx=(5, 0))
         clear_btn.grid(row=0, column=2, sticky='ne', padx=5)
         stop_btn.grid(row=0, column=3, sticky='ne',)

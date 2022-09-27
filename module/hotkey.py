@@ -12,7 +12,7 @@ class hotkey_class:
         if sys.platform == 'darwin':
             self.copy = 'Command-c'
             self.start = 'Command-Return'
-            self.select_all = 'Command-a'
+            self.select_all = 'Command-KeyRelease-a'
             self.stop = 'Command-x'
 
 hotkey = hotkey_class()
