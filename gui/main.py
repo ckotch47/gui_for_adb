@@ -48,18 +48,10 @@ class main_gui:
         self._root.mainloop()
 
     def init_tab(self):
-        self._tabControl = ttk.Notebook(self._root)
+        frame = ttk.Frame(self._root)
+        gui_tab_two.tabTwo_init(frame)
+        frame.pack(expand=1, fill="both")
 
-        tabOne = ttk.Frame(self._tabControl)
-        gui_tab_one.tabOne_init(tabOne)
-
-        tabTwo = ttk.Frame(self._tabControl)
-        gui_tab_two.tabTwo_init(tabTwo)
-
-        self._tabControl.add(tabOne, text=text_tab_one.name)
-        self._tabControl.add(tabTwo, text=text_tab_two.name)
-
-        self._tabControl.pack(expand=1, fill="both")
 
     @staticmethod
     def on_closing():

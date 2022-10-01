@@ -1,8 +1,9 @@
-from tkinter import ttk, NO, CENTER, W
+from tkinter import ttk, NO, CENTER, W, Toplevel, Frame
 from module.mouse_btn import mouse_btn
 from text.text_en import text_tab_one
 import tabone.tabone_service as tab_one_service
 from module.hotkey import hotkey
+
 
 class tab_one_gui:
     def __init__(self):
@@ -75,6 +76,14 @@ class tab_one_gui:
         table.heading("TIME", text="TIME", anchor=CENTER)
         table.heading("CMD", text="CMD", anchor=CENTER)
         table.heading("SD", text="", anchor=CENTER)
+
+    def show(self):
+        __MainWindow = Toplevel()
+        __MainWindow.geometry('900x350')
+        __MainWindow.wm_title('request')
+        frame = Frame(__MainWindow)
+        self.tabOne_init(frame)
+        frame.pack(expand=1, fill='both')
 
 
 gui_tab_one = tab_one_gui()

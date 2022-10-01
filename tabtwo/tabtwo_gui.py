@@ -3,7 +3,7 @@ from module.mouse_btn import mouse_btn
 from text.text_en import text_tab_two
 import tabtwo.tabtwo_service as tab_two_service
 from module.hotkey import hotkey
-
+from tabone.tabone_gui import gui_tab_one
 
 class tab_two_gui:
     def __init__(self):
@@ -39,6 +39,9 @@ class tab_two_gui:
         # add button to stop log
         stop_btn = ttk.Button(tab, text=text_tab_two.stop_btn, command=self.service.stop_log)
 
+        # add btn start
+        activity_btn = ttk.Button(tab, text='ps', command=gui_tab_one.show)
+
         # config table head
         self.tabTwoTable_columnSettings(table)
 
@@ -53,15 +56,17 @@ class tab_two_gui:
         input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0))
         start_btn.grid(row=0, column=1, sticky='ne', padx=(5, 0))
         clear_btn.grid(row=0, column=2, sticky='ne', padx=5)
-        stop_btn.grid(row=0, column=3, sticky='ne',)
+        stop_btn.grid(row=0, column=3, sticky='ne', )
+        activity_btn.grid(row=0, column=4, sticky='ne', padx=5)
+
         # row 1
-        table.grid(row=1, column=0, padx=(5, 20), pady=5, sticky="nsew", rowspan=3, columnspan=4)
+        table.grid(row=1, column=0, padx=(5, 20), pady=5, sticky="nsew", rowspan=3, columnspan=5)
 
         # row 2
-        msg_text.grid(row=4, column=0, sticky="nsew", padx=(5, 20), pady=5, rowspan=1, columnspan=4)
+        msg_text.grid(row=4, column=0, sticky="nsew", padx=(3, 17), pady=5, rowspan=1, columnspan=5)
 
         # scrollbar
-        y_scrollbarTwo.grid(row=1, column=3, sticky='nse', rowspan=4)
+        y_scrollbarTwo.grid(row=1, column=4, sticky='nse', rowspan=4)
 
         # register service and bind
 
