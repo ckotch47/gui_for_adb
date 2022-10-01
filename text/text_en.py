@@ -2,6 +2,8 @@ class text_tab_one:
     name = 'ps'
     refresh_btn = 'refresh'
     placeholder_text = 'enter package name'
+    title = 'activity'
+
 
 class text_tab_two:
     name = 'log'
@@ -9,7 +11,7 @@ class text_tab_two:
     clear_btn = 'clear'
     stop_btn = 'stop'
     start_btn = 'start'
-    placeholder_text = 'pid:0000 || tag:library || re:[Ss]ocket || type:(w,d,i,v,e,f,s) all or * for all message'
+    placeholder_text = 'pid:0000 || tag:library || re:[Ss]ocket || type:(w,d,i,v,e,f,s)'
 
 
 class main_text:

@@ -44,10 +44,10 @@ class main_gui:
         self._root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self._root.geometry("900x540")
 
-        self.init_tab()
+        self.init_window()
         self._root.mainloop()
 
-    def init_tab(self):
+    def init_window(self):
         frame = ttk.Frame(self._root)
         gui_tab_two.tabTwo_init(frame)
         frame.pack(expand=1, fill="both")

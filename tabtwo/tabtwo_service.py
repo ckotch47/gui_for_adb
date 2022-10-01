@@ -92,12 +92,14 @@ class service:
                     'type:') == -1:
                 tmp = temp.replace('re:', '')
                 self.main_log('-e', tmp)
-            elif temp == 'all' or temp == '*':
+            elif temp == 'all' or temp == '*' or temp == '':
                 self.main_log('', '')
             elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find(
                     'type:') == 0:
                 tmp = temp.replace('type:', '')
                 self.main_log(f'*:{tmp.upper()}')
+        else:
+            self.main_log('', '')
 
     # print log
     def main_log(self, method='', param=''):

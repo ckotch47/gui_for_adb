@@ -83,6 +83,7 @@ class tab_two_gui:
 
         msg_text.bind(f'<{hotkey.select_all}>', self.service.select_all_text)
 
+        # self.service.main_log('','')
     @staticmethod
     def tabTwoTable_columnSettings(table):
         table.column("#0", width=0, stretch=NO)

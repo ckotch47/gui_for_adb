@@ -80,7 +80,7 @@ class tab_one_gui:
     def show(self):
         __MainWindow = Toplevel()
         __MainWindow.geometry('900x350')
-        __MainWindow.wm_title('request')
+        __MainWindow.wm_title(text_tab_one.title)
         frame = Frame(__MainWindow)
         self.tabOne_init(frame)
         frame.pack(expand=1, fill='both')
