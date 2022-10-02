@@ -1,3 +1,4 @@
+import sys
 from tkinter import ttk, NO, CENTER, W, Toplevel, Frame
 from module.mouse_btn import mouse_btn
 from text.text_en import text_tab_one
@@ -37,8 +38,12 @@ class tab_one_gui:
         y_scrollbar.configure(command=table.yview)
 
         # add gui element on tab
-        input_query.grid(row=0, column=0, sticky="nwe", padx=5)
-        refresh_btn.grid(row=0, column=1, sticky='nwe')
+        if sys.platform != 'darwin':
+            ipady = 3
+        else:
+            ipady = 0
+        input_query.grid(row=0, column=0, sticky="nwe", padx=5, ipady=ipady, pady=5)
+        refresh_btn.grid(row=0, column=1, sticky='nwe', padx=5, pady=5)
         table.grid(row=1, column=0, padx=(5, 20), pady=5, sticky="nsew", columnspan=2)
         y_scrollbar.grid(row=1, column=1, sticky='nse', rowspan=1)
 
@@ -78,6 +83,7 @@ class tab_one_gui:
         table.heading("SD", text="", anchor=CENTER)
 
     def show(self):
+
         __MainWindow = Toplevel()
         __MainWindow.geometry('900x350')
         __MainWindow.wm_title(text_tab_one.title)

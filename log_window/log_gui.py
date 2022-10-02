@@ -1,3 +1,4 @@
+import sys
 from tkinter import ttk, NO, CENTER, Text, PhotoImage
 from module.mouse_btn import mouse_btn
 from text.text_en import text_tab_two
@@ -13,6 +14,7 @@ class tab_two_gui:
 
     def tabTwo_init(self, tab):
         # config tab row, col
+
         tab.rowconfigure(1, weight=2)
         tab.columnconfigure(0, weight=1)
 
@@ -51,11 +53,15 @@ class tab_two_gui:
         # add message box
 
         # row 0
-        input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0), ipady=0)
-        start_btn.grid(row=0, column=1, sticky='ne', padx=(5, 0))
-        clear_btn.grid(row=0, column=2, sticky='ne', padx=5)
-        stop_btn.grid(row=0, column=3, sticky='ne', )
-        activity_btn.grid(row=0, column=4, sticky='ne', padx=5)
+        if sys.platform != 'darwin':
+            ipady = 3
+        else:
+            ipady = 0
+        input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0), ipady=ipady, pady=5)
+        start_btn.grid(row=0, column=1, sticky='ne', padx=(5, 0), pady=5)
+        clear_btn.grid(row=0, column=2, sticky='ne', padx=5, pady=5)
+        stop_btn.grid(row=0, column=3, sticky='ne', pady=5)
+        activity_btn.grid(row=0, column=4, sticky='ne', padx=5, pady=5)
 
         # row 1
         table.grid(row=1, column=0, padx=(5, 20), pady=5, sticky="nsew", rowspan=3, columnspan=5)
