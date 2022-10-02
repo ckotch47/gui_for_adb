@@ -5,7 +5,7 @@ from tkinter import *
 from tkinter import messagebox
 
 from module.mouse_btn import mouse_btn
-from text.text_en import main_text, text_select_device
+from text import *
 
 
 class devices:
@@ -98,7 +98,7 @@ class devices:
     def del_select_device():
         config = ConfigParser()
         config.read('tmp/temp.tmp')
-        # config['DEFAULT']['select_device'] = 'no'
+        config['DEFAULT']['select_device'] = 'no'
         config.write(open('tmp/temp.tmp', 'w'))
 
     def cancel_btn_callback(self):

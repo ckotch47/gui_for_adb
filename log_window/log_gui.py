@@ -1,7 +1,7 @@
 import sys
 from tkinter import ttk, NO, CENTER, Text, PhotoImage
 from module.mouse_btn import mouse_btn
-from text.text_en import text_tab_two
+from text import *
 import log_window.log_service as tab_two_service
 from module.hotkey import hotkey
 from activity.activity_gui import gui_tab_one

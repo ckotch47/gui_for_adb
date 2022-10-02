@@ -3,7 +3,7 @@ import subprocess
 import threading
 from configparser import ConfigParser
 from tkinter import  messagebox, SEL, INSERT
-from text.text_en import main_text, text_tab_two
+from text import *
 import module.lock as app_lock
 from module.check_device import device
 import pyperclip

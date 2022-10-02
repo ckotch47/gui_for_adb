@@ -36,3 +36,21 @@ class text_select_device:
     label = 'Select device'
     ok_btn = 'ok'
     cancel_btn = 'cancel'
+
+
+class text_menu_top:
+    file = 'File'
+    select_device = 'Select device'
+    exit = 'Exit'
+    about = 'About'
+    settings = 'Settings'
+    help = 'Help'
+    performance = 'Performance'
+
+
+class text_about_window:
+    title = 'About'
+    text = 'gui for adb logcat \n' \
+           'Build on 2022 \n' \
+           'Powered by ckotch47'
+    github = 'https://github.com/ckotch47'
