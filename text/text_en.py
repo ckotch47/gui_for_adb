@@ -11,6 +11,7 @@ class text_tab_two:
     clear_btn = 'clear'
     stop_btn = 'stop'
     start_btn = 'start'
+    activity_btn = 'ps'
     placeholder_text = 'pid:0000 || tag:library || re:[Ss]ocket || type:(w,d,i,v,e,f,s)'
 
 
@@ -28,3 +29,10 @@ class main_text:
         'title': 'Error',
         'text': 'App cannot be closed while running log'
     }
+
+
+class text_select_device:
+    title = 'devices'
+    label = 'Select device'
+    ok_btn = 'ok'
+    cancel_btn = 'cancel'

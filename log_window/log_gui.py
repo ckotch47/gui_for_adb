@@ -1,16 +1,15 @@
-from tkinter import ttk, NO, CENTER, Text
+from tkinter import ttk, NO, CENTER, Text, PhotoImage
 from module.mouse_btn import mouse_btn
 from text.text_en import text_tab_two
-import tabtwo.tabtwo_service as tab_two_service
+import log_window.log_service as tab_two_service
 from module.hotkey import hotkey
-from tabone.tabone_gui import gui_tab_one
+from activity.activity_gui import gui_tab_one
+
 
 class tab_two_gui:
     def __init__(self):
         self.service = None
         self.m_btn = mouse_btn
-
-
 
     def tabTwo_init(self, tab):
         # config tab row, col
@@ -29,7 +28,6 @@ class tab_two_gui:
         # add input
         input_find = ttk.Entry(tab)
 
-
         # add btn start
         start_btn = ttk.Button(tab, text=text_tab_two.start_btn, command=self.service.callback_start_btn)
 
@@ -40,7 +38,7 @@ class tab_two_gui:
         stop_btn = ttk.Button(tab, text=text_tab_two.stop_btn, command=self.service.stop_log)
 
         # add btn start
-        activity_btn = ttk.Button(tab, text='ps', command=gui_tab_one.show)
+        activity_btn = ttk.Button(tab, text=text_tab_two.activity_btn, command=gui_tab_one.show)
 
         # config table head
         self.tabTwoTable_columnSettings(table)
@@ -53,7 +51,7 @@ class tab_two_gui:
         # add message box
 
         # row 0
-        input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0))
+        input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0), ipady=0)
         start_btn.grid(row=0, column=1, sticky='ne', padx=(5, 0))
         clear_btn.grid(row=0, column=2, sticky='ne', padx=5)
         stop_btn.grid(row=0, column=3, sticky='ne', )
@@ -84,6 +82,7 @@ class tab_two_gui:
         msg_text.bind(f'<{hotkey.select_all}>', self.service.select_all_text)
 
         # self.service.main_log('','')
+
     @staticmethod
     def tabTwoTable_columnSettings(table):
         table.column("#0", width=0, stretch=NO)
@@ -103,7 +102,6 @@ class tab_two_gui:
         table.heading('TYPE', text="TYPE", anchor=CENTER)
         table.heading('LIBRARY', text="LIBRARY", anchor=CENTER)
         table.heading('MESSAGE', text="MESSAGE", anchor=CENTER)
-
 
 
 gui_tab_two = tab_two_gui()

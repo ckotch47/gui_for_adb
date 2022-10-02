@@ -2,11 +2,12 @@ import os
 import sys
 from tkinter import messagebox, Tk
 from configparser import ConfigParser
-from tabone.tabone_gui import *
-from tabtwo.tabtwo_gui import *
+from activity.activity_gui import *
+from log_window.log_gui import *
 
 from text.text_en import *
 import module.lock as app_lock
+from module.check_device import device
 
 config = ConfigParser()
 config.read('config.ini')
@@ -51,7 +52,7 @@ class main_gui:
         frame = ttk.Frame(self._root)
         gui_tab_two.tabTwo_init(frame)
         frame.pack(expand=1, fill="both")
-
+        device.select_device_window()
 
     @staticmethod
     def on_closing():
@@ -62,6 +63,7 @@ class main_gui:
             )
             return False
         else:
+            # device.del_select_device()
             os.system("adb kill-server")
             sys.exit(0)
 

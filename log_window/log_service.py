@@ -2,20 +2,16 @@ import os
 import subprocess
 import threading
 from configparser import ConfigParser
-from tkinter import E, messagebox, SEL, INSERT
+from tkinter import  messagebox, SEL, INSERT
 from text.text_en import main_text, text_tab_two
 import module.lock as app_lock
+from module.check_device import device
 import pyperclip
 
 
 class service:
     def __init__(self, table=None, text_box=None):
-        config = ConfigParser()
-        config.read('config.ini')
-        if config.get('DEFAULT', 'adb_path') != 'no':
-            self.ADB_Path = str(config.get('DEFAULT', 'adb_path'))
-        else:
-            self.ADB_Path = 'adb/'
+        self.ADB_Path = device.get_adb_path()
 
         self.input_find = None
         self.table = table
@@ -29,8 +25,10 @@ class service:
 
     def clear_logcat(self):
         self.stop_log()
-        os.system(self.ADB_Path + 'adb logcat -c')
-        self.clear_all(self.table)
+        if device.check_device():
+            device_sh = ['-s', f'{device.get_current_device()}'] if device.get_current_device() else ['', '']
+            os.system(self.ADB_Path + f'adb {device_sh[0]} {device_sh[1]} logcat -c')
+            self.clear_all(self.table)
 
     @staticmethod
     def return_format_string(string):
@@ -79,32 +77,35 @@ class service:
     # callback for entry
     def callback_start_btn(self, event=None):
         temp: str = self.input_find.get()
-        if temp != text_tab_two.placeholder_text:
-            if temp.find('pid:') == 0 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find(
-                    'type:') == -1:
-                tmp = temp.replace('pid:', '')
-                self.main_log(f'--pid={tmp}')
-            elif temp.find('pid:') == -1 and temp.find('tag:') == 0 and temp.find('re:') == -1 and temp.find(
-                    'type:') == -1:
-                tmp = temp.replace('tag:', '')
-                self.main_log('-s', tmp)
-            elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == 0 and temp.find(
-                    'type:') == -1:
-                tmp = temp.replace('re:', '')
-                self.main_log('-e', tmp)
-            elif temp == 'all' or temp == '*' or temp == '':
+        if device.check_device():
+            if temp != text_tab_two.placeholder_text:
+                if temp.find('pid:') == 0 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find(
+                        'type:') == -1:
+                    tmp = temp.replace('pid:', '')
+                    self.main_log(f'--pid={tmp}')
+                elif temp.find('pid:') == -1 and temp.find('tag:') == 0 and temp.find('re:') == -1 and temp.find(
+                        'type:') == -1:
+                    tmp = temp.replace('tag:', '')
+                    self.main_log('-s', tmp)
+                elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == 0 and temp.find(
+                        'type:') == -1:
+                    tmp = temp.replace('re:', '')
+                    self.main_log('-e', tmp)
+                elif temp == 'all' or temp == '*' or temp == '':
+                    self.main_log('', '')
+                elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find(
+                        'type:') == 0:
+                    tmp = temp.replace('type:', '')
+                    self.main_log(f'*:{tmp.upper()}')
+            else:
                 self.main_log('', '')
-            elif temp.find('pid:') == -1 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find(
-                    'type:') == 0:
-                tmp = temp.replace('type:', '')
-                self.main_log(f'*:{tmp.upper()}')
-        else:
-            self.main_log('', '')
 
     # print log
     def main_log(self, method='', param=''):
         self.stop_log()
-        self.subprocess_val = subprocess.Popen([self.ADB_Path + "adb", "logcat", f'{method}', f'{param}'], shell=False,
+        device_sh = ['-s', f'{device.get_current_device()}'] if device.get_current_device() else ['', '']
+        self.subprocess_val = subprocess.Popen([self.ADB_Path + "adb", device_sh[0], device_sh[1], "logcat",
+                                                f'{method}', f'{param}'], shell=False,
                                                stdout=subprocess.PIPE)
         self.print_log = True
         app_lock.lock_activate()

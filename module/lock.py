@@ -1,18 +1,29 @@
-def lock_activate():
-    lock = open('tmp/lock.tmp', 'w+')
-    lock.write('lock')
-    lock.close()
+from configparser import ConfigParser
 
+config_path = 'tmp/lock.tmp'
+
+config = ConfigParser()
+config.read(config_path)
+
+
+def lock_activate():
+    config['DEFAULT']['app_lock'] = 'yes'
+    config.write(open(config_path, 'w'))
 
 def lock_deactivate():
-    lock = open('tmp/lock.tmp', 'w+')
-    lock.close()
+    config['DEFAULT']['app_lock'] = 'no'
+    config.write(open(config_path, 'w'))
 
 
 def is_lock():
-    lock = open('tmp/lock.tmp', 'r')
-    temp = lock.readline()
-    if temp == 'lock':
+    temp = config.get('DEFAULT', 'app_lock')
+    if temp == 'yes':
         return True
     else:
         return False
+
+
+
+
+
+

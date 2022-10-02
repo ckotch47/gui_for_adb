@@ -1,7 +1,7 @@
 from tkinter import ttk, NO, CENTER, W, Toplevel, Frame
 from module.mouse_btn import mouse_btn
 from text.text_en import text_tab_one
-import tabone.tabone_service as tab_one_service
+import activity.activity_service as tab_one_service
 from module.hotkey import hotkey
 
 

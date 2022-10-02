@@ -3,16 +3,11 @@ from configparser import ConfigParser
 from tkinter import messagebox
 import pyperclip
 from text.text_en import *
-
+from module.check_device import device
 
 class service:
     def __init__(self,  table=None):
-        config = ConfigParser()
-        config.read('config.ini')
-        if config.get('DEFAULT', 'adb_path') != 'no':
-            self.ADB_Path = str(config.get('DEFAULT', 'adb_path'))
-        else:
-            self.ADB_Path = 'adb/'
+        self.ADB_Path = device.get_adb_path()
 
         self.count = 0
         self.popen = None
@@ -41,7 +36,8 @@ class service:
 
     # placeholder end
     def logcat_command(self):
-        self.popen = subprocess.Popen([self.ADB_Path + "adb", "shell", "ps", "-Af"], shell=False,
+        device_sh = ['-s', f'{device.get_current_device()}'] if device.get_current_device() else ['', '']
+        self.popen = subprocess.Popen([self.ADB_Path + "adb", device_sh[0], device_sh[1], "shell", "ps", "-Af"], shell=False,
                                       stdout=subprocess.PIPE)
         try:
             next(iter(self.popen.stdout.readline, b""))
