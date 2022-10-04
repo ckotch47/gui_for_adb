@@ -3,7 +3,7 @@ import sys
 from tkinter import messagebox, Tk, Menu
 from configparser import ConfigParser
 from activity.activity_gui import *
-from gui import about
+from gui import about, settings
 from log_window.log_gui import *
 
 from text import *
@@ -56,7 +56,7 @@ class main_gui:
 
         subMenu = Menu(menuBar)
         menuBar.add_cascade(label=text_menu_top.settings, menu=subMenu)
-        subMenu.add_command(label=text_menu_top.performance)
+        subMenu.add_command(label=text_menu_top.performance, command=settings.show)
         subMenu.add_command(label=text_menu_top.about, command=about.show)
 
         self.init_window()

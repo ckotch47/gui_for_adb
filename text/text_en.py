@@ -54,3 +54,11 @@ class text_about_window:
            'Build on 2022 \n' \
            'Powered by ckotch47'
     github = 'https://github.com/ckotch47'
+
+
+class text_settings:
+    title = 'Settings'
+    label_adb_select = 'Select folder with adb'
+    change = 'Change'
+    label_locale_select = 'Select language'
+    label_information = 'Settings will be applied after application restart'
