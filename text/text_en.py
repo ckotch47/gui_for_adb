@@ -29,7 +29,10 @@ class main_text:
         'title': 'Error',
         'text': 'App cannot be closed while running log'
     }
-
+    error_not_found_adb = {
+        'title': 'Error',
+        'text': 'App not found path to adb \nPlease pick folder with adb tools'
+    }
 
 class text_select_device:
     title = 'devices'

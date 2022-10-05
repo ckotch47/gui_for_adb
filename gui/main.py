@@ -1,11 +1,8 @@
 import os
-import sys
 from tkinter import messagebox, Tk, Menu
-from configparser import ConfigParser
-from activity.activity_gui import *
 from gui import about, settings
 from log_window.log_gui import *
-
+from gui.topmenu import *
 from text import *
 import module.lock as app_lock
 from module.check_device import device
@@ -45,19 +42,7 @@ class main_gui:
         self._root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self._root.geometry("900x540")
 
-        top = self._root.winfo_toplevel()
-        menuBar = Menu(top)
-        top['menu'] = menuBar
-
-        subMenu1 = Menu(menuBar)
-        menuBar.add_cascade(label=text_menu_top.file, menu=subMenu1)
-        subMenu1.add_command(label=text_menu_top.select_device, command=device.select_device_window)
-        subMenu1.add_command(label=text_menu_top.exit, command=self.on_closing)
-
-        subMenu = Menu(menuBar)
-        menuBar.add_cascade(label=text_menu_top.settings, menu=subMenu)
-        subMenu.add_command(label=text_menu_top.performance, command=settings.show)
-        subMenu.add_command(label=text_menu_top.about, command=about.show)
+        init_top_menu(self._root, main_gui)
 
         self.init_window()
 

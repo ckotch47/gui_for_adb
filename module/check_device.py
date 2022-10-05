@@ -6,7 +6,7 @@ from tkinter import messagebox
 
 from module.mouse_btn import mouse_btn
 from text import *
-
+from gui import settings
 
 class devices:
     def __init__(self):
@@ -14,33 +14,45 @@ class devices:
         self.__root = None
         self.list_device_listbox = None
         self.popen = None
+        self.ADB_Path = self.get_adb_path_from_config()
+
+    @staticmethod
+    def get_adb_path_from_config():
         config = ConfigParser()
         config.read('config.ini')
         if config.get('DEFAULT', 'adb_path') != 'no':
-            self.ADB_Path = str(config.get('DEFAULT', 'adb_path'))
+            temp = str(config.get('DEFAULT', 'adb_path'))
         else:
-            self.ADB_Path = 'adb/'
-
+            temp = 'adb/'
+        return temp
     def check_device(self):
-        if self.get_current_device():
-            device_sh = ['-s', f'{self.get_current_device()}'] if self.get_current_device() else ['', '']
-            self.popen = subprocess.Popen([self.ADB_Path + "adb", device_sh[0], device_sh[1], "shell", "ps", "-Af"],
-                                          shell=False,
-                                          stdout=subprocess.PIPE)
-        else:
-            self.popen = subprocess.Popen([self.ADB_Path + "adb",  "shell", "ps", "-Af"],
-                                          shell=False,
-                                          stdout=subprocess.PIPE)
         try:
-            next(iter(self.popen.stdout.readline, b""))
-            return True
-        except StopIteration:
+            if self.get_current_device():
+                device_sh = ['-s', f'{self.get_current_device()}'] if self.get_current_device() else ['', '']
+                self.popen = subprocess.Popen([self.ADB_Path + "adb", device_sh[0], device_sh[1], "shell", "ps", "-Af"],
+                                              shell=False,
+                                              stdout=subprocess.PIPE)
+            else:
+                self.popen = subprocess.Popen([self.ADB_Path + "adb",  "shell", "ps", "-Af"],
+                                              shell=False,
+                                              stdout=subprocess.PIPE)
+            try:
+                next(iter(self.popen.stdout.readline, b""))
+                return True
+            except StopIteration:
+                messagebox.showwarning(
+                    main_text.warning_not_found_device.get('title'),
+                    main_text.warning_not_found_device.get('text')
+                )
+                os.kill(self.popen.pid, 1)
+                return False
+        except FileNotFoundError:
             messagebox.showwarning(
-                main_text.warning_not_found_device.get('title'),
-                main_text.warning_not_found_device.get('text')
+                main_text.error_not_found_adb.get('title'),
+                main_text.error_not_found_adb.get('text')
             )
-            os.kill(self.popen.pid, 1)
-            return False
+            settings.select_folder()
+            self.ADB_Path = self.get_adb_path_from_config()
 
     def get_adb_path(self):
         return self.ADB_Path

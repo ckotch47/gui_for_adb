@@ -29,7 +29,10 @@ class main_text:
         'title': 'Ошибка',
         'text': 'Остановите запись логов для закрытия приложения'
     }
-
+    error_not_found_adb = {
+        'title': 'Ошибка',
+        'text': 'Приложение не может найти путь к adb \nУкажите путь к папке с adb tools'
+    }
 
 class text_select_device:
     title = 'Устройства'
