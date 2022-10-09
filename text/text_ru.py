@@ -31,7 +31,8 @@ class main_text:
     }
     error_not_found_adb = {
         'title': 'Ошибка',
-        'text': 'Приложение не может найти путь к adb \nУкажите путь к папке с adb tools'
+        'text': 'Приложение не может найти путь к adb \nУкажите путь к папке с adb tools\n'
+                'Или скачайте с https://developer.android.com/studio/releases/platform-tools'
     }
 
 class text_select_device:

@@ -31,7 +31,8 @@ class main_text:
     }
     error_not_found_adb = {
         'title': 'Error',
-        'text': 'App not found path to adb \nPlease pick folder with adb tools'
+        'text': 'App not found path to adb \nPlease pick folder with adb tools \n'
+                'Or download from https://developer.android.com/studio/releases/platform-tools'
     }
 
 class text_select_device:
