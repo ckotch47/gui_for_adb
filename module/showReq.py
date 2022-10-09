@@ -37,8 +37,6 @@ class ShowReq:
         self.auth = StringVar()
         self.req = StringVar()
 
-
-
         self.comboBox = ttk.Combobox(__MainWindow, textvariable=self.select_method, width=8)
         self.comboBox['value'] = ['GET', 'POST', 'PUT', 'DELETE']
         self.comboBox['state'] = 'readonly'
@@ -79,6 +77,7 @@ class ShowReq:
         elif method == 'DELETE':
             self.comboBox.current(3)
         __MainWindow.mainloop()
+
     def get_text_re(self, array, splash=''):
         text = ''
         if not type(array) is str:
