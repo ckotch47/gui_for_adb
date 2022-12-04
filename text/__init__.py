@@ -1,8 +1,8 @@
 from configparser import ConfigParser
 from text.app_locale import app_locale
-
+import module.cfg as cfg
 config = ConfigParser()
-config.read('config.ini')
+config.read(cfg.get_path_config())
 this_locale = config.get('DEFAULT', 'locale')
 
 if this_locale == 'ru':

@@ -1,14 +1,14 @@
 import os
-from tkinter import messagebox, Tk, Menu
-from gui import about, settings
+from tkinter import messagebox, Tk
+
 from log_window.log_gui import *
 from gui.topmenu import *
 from text import *
 import module.lock as app_lock
 from module.check_device import device
-
+import module.cfg as cfg
 config = ConfigParser()
-config.read('config.ini')
+config.read(cfg.get_path_config())
 is_theme = False
 
 if config.get('DEFAULT', 'use_theme') == 'yes':

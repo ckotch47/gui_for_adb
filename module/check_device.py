@@ -6,6 +6,7 @@ from tkinter import messagebox
 from module.mouse_btn import mouse_btn
 from text import *
 from gui import settings
+import module.cfg as cfg
 
 
 class devices:
@@ -19,7 +20,7 @@ class devices:
     @staticmethod
     def get_adb_path_from_config():
         config = ConfigParser()
-        config.read('config.ini')
+        config.read(cfg.get_path_config())
         if config.get('DEFAULT', 'adb_path') != 'no':
             temp = str(config.get('DEFAULT', 'adb_path'))
         else:
@@ -63,6 +64,7 @@ class devices:
             return False
 
         self.__root = Toplevel()
+        self.__root.attributes("-topmost", True)
         # __root.geometry("300x400")
         self.__root.wm_title(text_select_device.title)
         frame = Frame(self.__root)

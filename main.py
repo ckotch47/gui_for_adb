@@ -1,6 +1,6 @@
 
 from gui.main import gui
-import module.settings as settings
+import module.cfg as cfg
 if __name__ == "__main__":
-    settings.check_config_ini()
-    # gui.init_root()
+    cfg.check_config_ini()
+    gui.init_root()

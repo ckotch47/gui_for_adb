@@ -1,13 +1,8 @@
-from configparser import ConfigParser
 from tkinter import *
 from tkinter import filedialog
-
 from text import *
 
-
 config = ConfigParser()
-
-
 
 
 def show():
@@ -24,7 +19,7 @@ def show():
     Label(frame_adb, text=text_settings.label_adb_select).pack(side='left')
     Button(frame_adb, text=text_settings.change, command=select_folder).pack(side='right')
 
-    config.read('config.ini')
+    config.read(cfg.get_path_config())
     temp_locale = config.get('DEFAULT', 'locale')
 
     locale_var = StringVar()
@@ -44,15 +39,15 @@ def show():
 
 def select_locale(event):
     if event in app_locale:
-        config.read('config.ini')
+        config.read(cfg.get_path_config())
         config['DEFAULT']['locale'] = event
-        config.write(open('config.ini', 'w'))
+        config.write(open(cfg.get_path_config(), 'w'))
+
 
 def select_folder():
+
     folder_selected = filedialog.askdirectory() + '/'
 
-    config.read('config.ini')
+    config.read(cfg.get_path_config())
     config['DEFAULT']['adb_path'] = folder_selected
-    config.write(open('config.ini', 'w'))
-
-
+    config.write(open(cfg.get_path_config(), 'w'))
