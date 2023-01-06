@@ -1,7 +1,13 @@
+"""
+hotkey into app
+"""
 import sys
 
 
 class HotKey:
+    """
+    if os linux or window
+    """
     copy = 'Control-c'
     start = 'Control-Return'
     enter = 'Return'
@@ -9,6 +15,9 @@ class HotKey:
     stop = 'Control-x'
 
     def __init__(self):
+        """
+        if MacOs
+        """
         if sys.platform == 'darwin':
             self.copy = 'Command-c'
             self.start = 'Command-Return'

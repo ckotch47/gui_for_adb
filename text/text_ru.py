@@ -1,11 +1,16 @@
-class text_tab_one:
+"""
+ru text locale
+"""
+
+
+class ActivitiText:
     name = 'ps'
     refresh_btn = 'Обновить'
     placeholder_text = 'Имя пакета'
     title = 'Процессы'
 
 
-class text_tab_two:
+class LogText:
     name = 'Лог'
     search_label = 'Поиск'
     clear_btn = 'Очистить'
@@ -15,7 +20,7 @@ class text_tab_two:
     placeholder_text = 'pid:0000 || tag:library || re:[Ss]ocket || type:(w,d,i,v,e,f,s)'
 
 
-class main_text:
+class MainText:
     title = 'gui adb'
     warning_not_found_device = {
         'title': 'Предупреждение',
@@ -35,14 +40,15 @@ class main_text:
                 'Или скачайте с https://developer.android.com/studio/releases/platform-tools'
     }
 
-class text_select_device:
+
+class SelectDeviceText:
     title = 'Устройства'
     label = 'Выберите устройств'
     ok_btn = 'Ок'
     cancel_btn = 'Отмена'
 
 
-class text_menu_top:
+class MenuTopText:
     file = 'Файл'
     select_device = 'Выбрать устройств'
     exit = 'Выход'
@@ -52,14 +58,15 @@ class text_menu_top:
     performance = 'Настройки'
 
 
-class text_about_window:
+class AboutGuiText:
     title = 'О программе'
     text = 'gui for adb logcat \n' \
            'Build on 2022 \n' \
            'Powered by ckotch47'
     github = 'https://github.com/ckotch47'
 
-class text_settings:
+
+class SettingText:
     title = 'Настройки'
     label_adb_select = 'Укажите путь ADB'
     change = 'Выбрать'

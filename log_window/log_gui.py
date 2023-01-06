@@ -75,28 +75,28 @@ class LogGui:
         init start btn
         """
         # add btn start
-        start_btn = ttk.Button(self.tab, text=text_tab_two.start_btn, command=self.service.callback_start_btn)
+        start_btn = ttk.Button(self.tab, text=LogText.start_btn, command=self.service.callback_start_btn)
         start_btn.grid(row=0, column=3, sticky='nwe', padx=(5, 0), pady=5)
 
     def settings_clear_btn(self):
         """
         init clear btn
         """
-        clear_btn = ttk.Button(self.tab, text=text_tab_two.clear_btn, command=self.service.clear_logcat)
+        clear_btn = ttk.Button(self.tab, text=LogText.clear_btn, command=self.service.clear_logcat)
         clear_btn.grid(row=0, column=4, sticky='nwe', padx=5, pady=5)
 
     def settings_stop_btn(self):
         """
         init stop btn
         """
-        stop_btn = ttk.Button(self.tab, text=text_tab_two.stop_btn, command=self.service.stop_log)
+        stop_btn = ttk.Button(self.tab, text=LogText.stop_btn, command=self.service.stop_log)
         stop_btn.grid(row=0, column=5, sticky='nwe', pady=5)
 
     def settings_activiti_btn(self):
         """
         init ps btn
         """
-        activity_btn = ttk.Button(self.tab, text=text_tab_two.activity_btn, command=activiti_gui.show)
+        activity_btn = ttk.Button(self.tab, text=LogText.activity_btn, command=activiti_gui.show)
         activity_btn.grid(row=0, column=6, sticky='nwe', padx=5, pady=5)
 
     def setting_devices_list(self):

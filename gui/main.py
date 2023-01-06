@@ -53,7 +53,7 @@ class MainGui:
         else:
             self._root = Tk()
 
-        self._root.title(main_text.title)
+        self._root.title(MainText.title)
         self._root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self._root.geometry("900x540")
 
@@ -79,8 +79,8 @@ class MainGui:
         """
         if app_lock.is_lock():
             messagebox.showwarning(
-                main_text.warning_stop_log_before_close_app.get('title'),
-                main_text.warning_stop_log_before_close_app.get('text')
+                MainText.warning_stop_log_before_close_app.get('title'),
+                MainText.warning_stop_log_before_close_app.get('text')
             )
             return False
         else:

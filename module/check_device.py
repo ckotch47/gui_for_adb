@@ -1,3 +1,6 @@
+"""
+check available device adb
+"""
 import os
 import subprocess
 from tkinter import *
@@ -9,27 +12,27 @@ from gui import settings
 import module.cfg as cfg
 
 
-class devices:
+class Devices:
+    """
+    class for check available device
+    """
+
     def __init__(self):
+        """
+        init class
+        """
         self.m_btn = mouse_btn
         self.__root = None
         self.list_device_listbox = None
         self.popen = None
         self.ADB_Path = self.get_adb_path_from_config()
 
-    @staticmethod
-    def get_adb_path_from_config():
-        config = ConfigParser()
-        config.read(cfg.get_path_config())
-        if config.get('DEFAULT', 'adb_path') != 'no':
-            temp = str(config.get('DEFAULT', 'adb_path'))
-        else:
-            temp = 'adb/'
-        return temp
-
     def check_device(self):
+        """
+        function for get all device from adb
+        """
         try:
-            if self.get_current_device():
+            if self.get_current_device():  # device is select
                 device_sh = ['-s', f'{self.get_current_device()}'] if self.get_current_device() else ['', '']
                 self.popen = subprocess.Popen([self.ADB_Path + "adb", device_sh[0], device_sh[1], "shell", "ps", "-Af"],
                                               shell=False,
@@ -38,37 +41,44 @@ class devices:
                 self.popen = subprocess.Popen([self.ADB_Path + "adb", "shell", "ps", "-Af"],
                                               shell=False,
                                               stdout=subprocess.PIPE)
-            try:
+            try:  # try get info device
                 next(iter(self.popen.stdout.readline, b""))
                 return True
             except StopIteration:
                 messagebox.showwarning(
-                    main_text.warning_not_found_device.get('title'),
-                    main_text.warning_not_found_device.get('text')
+                    MainText.warning_not_found_device.get('title'),
+                    MainText.warning_not_found_device.get('text')
                 )
                 os.kill(self.popen.pid, 1)
                 return False
         except FileNotFoundError:
             messagebox.showwarning(
-                main_text.error_not_found_adb.get('title'),
-                main_text.error_not_found_adb.get('text')
+                MainText.error_not_found_adb.get('title'),
+                MainText.error_not_found_adb.get('text')
             )
-            settings.select_folder()
+            settings.select_folder()  # folder to adb
             self.ADB_Path = self.get_adb_path_from_config()
 
     def get_adb_path(self):
+        """
+        return path to adb
+        """
         return self.ADB_Path
 
     def select_device_window(self):
+        """
+        window for select device
+        TODO rework on listbox
+        """
         if not self.check_device():
             return False
 
         self.__root = Toplevel()
         self.__root.attributes("-topmost", True)
         # __root.geometry("300x400")
-        self.__root.wm_title(text_select_device.title)
+        self.__root.wm_title(SelectDeviceText.title)
         frame = Frame(self.__root)
-        label = Label(frame, text=text_select_device.label)
+        label = Label(frame, text=SelectDeviceText.label)
         label.pack()
         frame.pack(expand=1, fill='both')
 
@@ -79,13 +89,16 @@ class devices:
         frame = Frame(self.__root)
         frame.pack(expand=1, fill='both')
 
-        cancel_btn = Button(frame, text=text_select_device.cancel_btn, command=self.cancel_btn_callback)
+        cancel_btn = Button(frame, text=SelectDeviceText.cancel_btn, command=self.cancel_btn_callback)
         cancel_btn.pack(side='left', anchor='s')
 
-        ok_btn = Button(frame, text=text_select_device.ok_btn, command=self.select_device_btn_callback)
+        ok_btn = Button(frame, text=SelectDeviceText.ok_btn, command=self.select_device_btn_callback)
         ok_btn.pack(side='right', anchor='s')
 
     def get_list_devices(self):
+        """
+        return all connected device
+        """
         self.popen = subprocess.Popen([self.ADB_Path + "adb", "devices"], shell=False,
                                       stdout=subprocess.PIPE)
         next(iter(self.popen.stdout.readline, b""))
@@ -97,6 +110,9 @@ class devices:
         return res
 
     def select_device_btn_callback(self, event=None):
+        """
+        select device into findow
+        """
         selection = self.list_device_listbox.curselection()
         cur_device = self.list_device_listbox.get(selection[0])
         self.save_select_device(cur_device)
@@ -104,13 +120,22 @@ class devices:
 
     @staticmethod
     def save_select_device(select_device):
+        """
+        save device id into env
+        """
         os.environ['select_device'] = select_device
 
     @staticmethod
     def del_select_device():
+        """
+        delete device id into env
+        """
         os.environ['select_device'] = 'no'
 
     def cancel_btn_callback(self):
+        """
+        clos app where device not select
+        """
         temp = self.get_list_devices()[0]
         if temp:
             self.save_select_device(temp)
@@ -118,10 +143,26 @@ class devices:
 
     @staticmethod
     def get_current_device():
+        """
+        return current device id
+        """
         if os.getenv('select_device') != 'no':
             return os.getenv('select_device')
         else:
             return None
 
+    @staticmethod
+    def get_adb_path_from_config():
+        """
+        get path to adb from config
+        """
+        config = ConfigParser()
+        config.read(cfg.get_path_config())
+        if config.get('DEFAULT', 'adb_path') != 'no':
+            temp = str(config.get('DEFAULT', 'adb_path'))
+        else:
+            temp = 'adb/'
+        return temp
 
-device = devices()
+
+device = Devices()

@@ -1,6 +1,12 @@
+"""
+init locale text
+"""
+
 from configparser import ConfigParser
 from text.app_locale import app_locale
+
 import module.cfg as cfg
+
 cfg.check_config_ini()
 config = ConfigParser()
 config.read(cfg.get_path_config())

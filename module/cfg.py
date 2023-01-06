@@ -1,3 +1,6 @@
+"""
+work with config file
+"""
 import os
 import sys
 from pathlib import Path
@@ -10,6 +13,9 @@ else:
 
 
 def check_config_ini():
+    """
+    check config file
+    """
     if os.path.exists(f'{folder_path}/config.ini'):
         pass
     else:
@@ -19,6 +25,9 @@ def check_config_ini():
 
 
 def create_config_ini():
+    """
+    creating config file
+    """
     os.system(f'mkdir {folder_path}')
     os.mkdir(folder_path)
     f = open(f'{folder_path}/config.ini', 'w+')
@@ -32,4 +41,7 @@ def create_config_ini():
 
 
 def get_path_config():
+    """
+    return full path to config
+    """
     return f'{folder_path}/config.ini'

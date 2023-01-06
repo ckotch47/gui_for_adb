@@ -50,7 +50,7 @@ class LogGuiService:
         """
         clear placeholder where user focusin input
         """
-        if self.input_find.get() == '' or self.input_find.get() == text_tab_two.placeholder_text:
+        if self.input_find.get() == '' or self.input_find.get() == LogText.placeholder_text:
             self.input_find.delete(0, 'end')
             self.input_find.config(foreground='black')
 
@@ -61,7 +61,7 @@ class LogGuiService:
         if self.input_find.get() == '':
             self.input_find.delete(0, 'end')
             self.input_find.config(foreground='gray')
-            self.input_find.insert(0, text_tab_two.placeholder_text)
+            self.input_find.insert(0, LogText.placeholder_text)
 
     def bind_placeholder(self, entry_search):
         """
@@ -70,7 +70,7 @@ class LogGuiService:
         self.input_find = entry_search
         self.input_find.delete(0, 'end')
         self.input_find.config(foreground='gray')
-        self.input_find.insert(0, text_tab_two.placeholder_text)
+        self.input_find.insert(0, LogText.placeholder_text)
         entry_search.bind("<FocusIn>", self.clean_placeholder)
         entry_search.bind("<FocusOut>", self.show_placeholder)
 
@@ -83,7 +83,7 @@ class LogGuiService:
         """
         temp: str = self.input_find.get()
         if device.check_device():
-            if temp != text_tab_two.placeholder_text:
+            if temp != LogText.placeholder_text:
                 if temp.find('pid:') == 0 and temp.find('tag:') == -1 and temp.find('re:') == -1 and temp.find(
                         'type:') == -1:
                     tmp = temp.replace('pid:', '')
@@ -148,8 +148,8 @@ class LogGuiService:
                 os.kill(self.subprocess_val.pid, 1)
             except:
                 messagebox.showwarning(
-                    main_text.error_close_subprocess.get('title'),
-                    main_text.error_close_subprocess.get('text')
+                    MainText.error_close_subprocess.get('title'),
+                    MainText.error_close_subprocess.get('text')
                 )
             self.thread.join(timeout=1)
             app_lock.lock_deactivate()

@@ -29,7 +29,7 @@ class ActivitiService:
         """
         function for clean placeholder where user focused on input
         """
-        if self.input_query.get() == '' or self.input_query.get() == text_tab_one.placeholder_text:
+        if self.input_query.get() == '' or self.input_query.get() == ActivitiText.placeholder_text:
             self.input_query.delete(0, 'end')
             self.input_query.config(foreground='black')
 
@@ -40,7 +40,7 @@ class ActivitiService:
         if self.input_query.get() == '':
             self.input_query.delete(0, 'end')
             self.input_query.config(foreground='gray')
-            self.input_query.insert(0, text_tab_one.placeholder_text)
+            self.input_query.insert(0, ActivitiText.placeholder_text)
 
     def bind_placeholder(self, entry_search):
         """
@@ -49,7 +49,7 @@ class ActivitiService:
         self.input_query = entry_search
         self.input_query.delete(0, 'end')
         self.input_query.config(foreground='gray')
-        self.input_query.insert(0, text_tab_one.placeholder_text)
+        self.input_query.insert(0, ActivitiText.placeholder_text)
         entry_search.bind("<FocusIn>", self.clean_placeholder)
         entry_search.bind("<FocusOut>", self.show_placeholder)
 
@@ -67,8 +67,8 @@ class ActivitiService:
             next(iter(self.popen.stdout.readline, b""))
         except StopIteration:
             messagebox.showwarning(
-                main_text.warning_not_found_device.get('title'),
-                main_text.warning_not_found_device.get('text')
+                MainText.warning_not_found_device.get('title'),
+                MainText.warning_not_found_device.get('text')
             )
             return []
         return iter(self.popen.stdout.readline, b"")

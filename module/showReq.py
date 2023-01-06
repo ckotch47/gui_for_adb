@@ -1,3 +1,8 @@
+"""
+class for requests
+get, post, put, delete
+now don't useQW
+"""
 import json
 from tkinter import Text, END, Toplevel, ttk, StringVar, Tk
 import requests
