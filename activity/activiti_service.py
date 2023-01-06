@@ -1,12 +1,12 @@
 """
 service for activiti gui
 """
-import subprocess
-import pyperclip
-
 from tkinter import messagebox
 from text.text_en import *
 from module.check_device import device
+
+import subprocess
+import pyperclip
 
 
 class ActivitiService:
@@ -89,21 +89,6 @@ class ActivitiService:
             else:
                 continue
 
-    @staticmethod
-    def return_value_from_string(str_is):
-        """
-        split str to dict
-        """
-        p = str(str_is).replace("b'", "").replace("'", "").split('\\')[0].split(' ')
-        return [x for x in p if x]
-
-    @staticmethod
-    def clear_all(tree):
-        """
-        clear table
-        """
-        tree.delete(*tree.get_children())
-
     def activiti_gui_refresh_btn(self):
         """
         update table
@@ -144,3 +129,18 @@ class ActivitiService:
         """"""
         event.widget.select_range(0, 'end')
         event.widget.icursor('end')
+
+    @staticmethod
+    def return_value_from_string(str_is):
+        """
+        split str to dict
+        """
+        p = str(str_is).replace("b'", "").replace("'", "").split('\\')[0].split(' ')
+        return [x for x in p if x]
+
+    @staticmethod
+    def clear_all(tree):
+        """
+        clear table
+        """
+        tree.delete(*tree.get_children())

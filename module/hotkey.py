@@ -1,7 +1,7 @@
 import sys
 
 
-class hotkey_class:
+class HotKey:
     copy = 'Control-c'
     start = 'Control-Return'
     enter = 'Return'
@@ -15,4 +15,5 @@ class hotkey_class:
             self.select_all = 'Command-KeyRelease-a'
             self.stop = 'Command-x'
 
-hotkey = hotkey_class()
+
+hotkey = HotKey()

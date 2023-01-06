@@ -1,11 +1,12 @@
 """
     init window for activiti process monitor
 """
-
 from tkinter import ttk, NO, CENTER, W, Toplevel, Frame
+
 from module.mouse_btn import mouse_btn
 from text import *
 from module.hotkey import hotkey
+
 import activity.activiti_service as activiti_service
 
 
@@ -85,6 +86,18 @@ class ActivitiGui:
         table.bind(f'<{hotkey.copy}>', self.service.copy_pid)
 
     # setting block end
+
+    def show(self):
+        """
+        show gui
+        """
+        _root_activiti = Toplevel()
+        _root_activiti.geometry('900x350')
+        _root_activiti.wm_title(text_tab_one.title)
+        frame = Frame(_root_activiti)
+        self.activiti_gui_init(frame)
+        frame.pack(expand=1, fill='both')
+
     @staticmethod
     def activiti_gui_column_settings(table):
         """
@@ -112,17 +125,6 @@ class ActivitiGui:
         table.heading("TIME", text="TIME", anchor=CENTER)
         table.heading("CMD", text="CMD", anchor=CENTER)
         table.heading("SD", text="", anchor=CENTER)
-
-    def show(self):
-        """
-        show gui
-        """
-        _root_activiti = Toplevel()
-        _root_activiti.geometry('900x350')
-        _root_activiti.wm_title(text_tab_one.title)
-        frame = Frame(_root_activiti)
-        self.activiti_gui_init(frame)
-        frame.pack(expand=1, fill='both')
 
 
 # for import activiti_gui
