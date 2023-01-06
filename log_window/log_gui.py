@@ -1,10 +1,12 @@
 import sys
-from tkinter import ttk, NO, CENTER, Text, PhotoImage
+from tkinter import ttk, NO, CENTER, Text, PhotoImage, Variable, Listbox
 from module.mouse_btn import mouse_btn
 from text import *
 import log_window.log_service as tab_two_service
 from module.hotkey import hotkey
-from activity.activity_gui import gui_tab_one
+from activity.activiti_gui import activiti_gui
+
+
 
 
 class tab_two_gui:
@@ -16,7 +18,7 @@ class tab_two_gui:
         # config tab row, col
 
         tab.rowconfigure(1, weight=2)
-        tab.columnconfigure(0, weight=1)
+        tab.columnconfigure(1, weight=1)
 
         # init table
         table = ttk.Treeview(tab, selectmode='extended')
@@ -28,7 +30,7 @@ class tab_two_gui:
         self.service = tab_two_service.service(table=table, text_box=msg_text)
 
         # add input
-        input_find = ttk.Entry(tab)
+        input_find = ttk.Entry(tab, width=70)
 
         # add btn start
         start_btn = ttk.Button(tab, text=text_tab_two.start_btn, command=self.service.callback_start_btn)
@@ -40,7 +42,7 @@ class tab_two_gui:
         stop_btn = ttk.Button(tab, text=text_tab_two.stop_btn, command=self.service.stop_log)
 
         # add btn start
-        activity_btn = ttk.Button(tab, text=text_tab_two.activity_btn, command=gui_tab_one.show)
+        activity_btn = ttk.Button(tab, text=text_tab_two.activity_btn, command=activiti_gui.show)
 
         # config table head
         self.tabTwoTable_columnSettings(table)
@@ -51,26 +53,29 @@ class tab_two_gui:
         y_scrollbarTwo.configure(command=table.yview)
 
         # add message box
-
+        languages = ["device1", "device2", "device", "device"]
+        languages_var = Variable(value=languages)
+        languages_listbox = Listbox(tab, listvariable=languages_var, width=30)
+        languages_listbox.grid(row=0, column=0, sticky="nsew", padx=(5, 0), ipady=0, pady=5, rowspan=5)
         # row 0
         if sys.platform != 'darwin':
             ipady = 3
         else:
             ipady = 0
-        input_find.grid(row=0, column=0, sticky="nwe", padx=(5, 0), ipady=ipady, pady=5)
-        start_btn.grid(row=0, column=1, sticky='ne', padx=(5, 0), pady=5)
-        clear_btn.grid(row=0, column=2, sticky='ne', padx=5, pady=5)
-        stop_btn.grid(row=0, column=3, sticky='ne', pady=5)
-        activity_btn.grid(row=0, column=4, sticky='ne', padx=5, pady=5)
+        input_find.grid(row=0, column=1, sticky="nwe", padx=(5, 0), ipady=ipady, pady=5, columnspan=2)
+        start_btn.grid(row=0, column=3, sticky='nwe', padx=(5, 0), pady=5,)
+        clear_btn.grid(row=0, column=4, sticky='nwe', padx=5, pady=5)
+        stop_btn.grid(row=0, column=5, sticky='nwe', pady=5)
+        activity_btn.grid(row=0, column=6, sticky='nwe', padx=5, pady=5)
 
         # row 1
-        table.grid(row=1, column=0, padx=(5, 20), pady=5, sticky="nsew", rowspan=3, columnspan=5)
+        table.grid(row=1, column=1, padx=(5, 20), pady=5, sticky="nsew", rowspan=3, columnspan=6)
 
         # row 2
-        msg_text.grid(row=4, column=0, sticky="nsew", padx=(3, 17), pady=5, rowspan=1, columnspan=5)
+        msg_text.grid(row=4, column=1, sticky="nsew", padx=(3, 17), pady=5, rowspan=1, columnspan=6)
 
         # scrollbar
-        y_scrollbarTwo.grid(row=1, column=4, sticky='nse', rowspan=4)
+        y_scrollbarTwo.grid(row=1, column=6, sticky='nse', rowspan=4)
 
         # register service and bind
 

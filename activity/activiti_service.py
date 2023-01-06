@@ -1,12 +1,22 @@
+"""
+service for activiti gui
+"""
 import subprocess
-from configparser import ConfigParser
-from tkinter import messagebox
 import pyperclip
+
+from tkinter import messagebox
 from text.text_en import *
 from module.check_device import device
 
-class service:
-    def __init__(self,  table=None):
+
+class ActivitiService:
+    """
+    class for activiti service. This have a all helpers function
+    """
+    def __init__(self, table=None):
+        """
+        init class
+        """
         self.ADB_Path = device.get_adb_path()
 
         self.count = 0
@@ -16,17 +26,26 @@ class service:
 
     # placeholder
     def clean_placeholder(self, *args):
+        """
+        function for clean placeholder where user focused on input
+        """
         if self.input_query.get() == '' or self.input_query.get() == text_tab_one.placeholder_text:
             self.input_query.delete(0, 'end')
             self.input_query.config(foreground='black')
 
     def show_placeholder(self, *args):
+        """
+        function for print tip into placeholder
+        """
         if self.input_query.get() == '':
             self.input_query.delete(0, 'end')
             self.input_query.config(foreground='gray')
             self.input_query.insert(0, text_tab_one.placeholder_text)
 
     def bind_placeholder(self, entry_search):
+        """
+        registery search on table by query from input
+        """
         self.input_query = entry_search
         self.input_query.delete(0, 'end')
         self.input_query.config(foreground='gray')
@@ -35,9 +54,14 @@ class service:
         entry_search.bind("<FocusOut>", self.show_placeholder)
 
     # placeholder end
+
     def logcat_command(self):
+        """
+        function for get all process from device
+        """
         device_sh = ['-s', f'{device.get_current_device()}'] if device.get_current_device() else ['', '']
-        self.popen = subprocess.Popen([self.ADB_Path + "adb", device_sh[0], device_sh[1], "shell", "ps", "-Af"], shell=False,
+        self.popen = subprocess.Popen([self.ADB_Path + "adb", device_sh[0], device_sh[1], "shell", "ps", "-Af"],
+                                      shell=False,
                                       stdout=subprocess.PIPE)
         try:
             next(iter(self.popen.stdout.readline, b""))
@@ -51,6 +75,9 @@ class service:
 
     # format and adding proccess
     def logcat_result(self):
+        """
+        formating string for table
+        """
         iid_dict = []
         for line in self.logcat_command():
             i = self.return_value_from_string(line)
@@ -64,18 +91,29 @@ class service:
 
     @staticmethod
     def return_value_from_string(str_is):
+        """
+        split str to dict
+        """
         p = str(str_is).replace("b'", "").replace("'", "").split('\\')[0].split(' ')
         return [x for x in p if x]
 
     @staticmethod
     def clear_all(tree):
+        """
+        clear table
+        """
         tree.delete(*tree.get_children())
 
-    def tabOneRefreshBTN(self):
+    def activiti_gui_refresh_btn(self):
+        """
+        update table
+        """
         self.clear_all(self.table)
         self.logcat_result()
 
     def find_by_query(self, query):
+        """
+        """
         i = 0
         for child in self.table.get_children():
             i += 1
@@ -85,10 +123,15 @@ class service:
         return True
 
     def register_for_find(self, input_t, tab):
+        """
+        """
         reg_find_by_query = tab.register(self.find_by_query)
         input_t.config(validate='key', validatecommand=(reg_find_by_query, '%P'))
 
     def copy_pid(self, event=None):
+        """
+        copy process pid into clip
+        """
         temp_string = ''
         for i in self.table.selection():
             temp = self.table.item(i)['values']
@@ -98,5 +141,6 @@ class service:
 
     @staticmethod
     def select_all_input(event=None):
+        """"""
         event.widget.select_range(0, 'end')
         event.widget.icursor('end')
