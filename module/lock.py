@@ -1,29 +1,17 @@
+import os
 from configparser import ConfigParser
-
-config_path = 'tmp/lock.tmp'
-
-config = ConfigParser()
-config.read(config_path)
 
 
 def lock_activate():
-    config['DEFAULT']['app_lock'] = 'yes'
-    config.write(open(config_path, 'w'))
+    os.environ['app_lock'] = 'yes'
+
 
 def lock_deactivate():
-    config['DEFAULT']['app_lock'] = 'no'
-    config.write(open(config_path, 'w'))
+    os.environ['app_lock'] = 'no'
 
 
 def is_lock():
-    temp = config.get('DEFAULT', 'app_lock')
-    if temp == 'yes':
+    if os.getenv('app_lock') == 'yes':
         return True
     else:
         return False
-
-
-
-
-
-
