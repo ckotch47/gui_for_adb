@@ -16,11 +16,11 @@ def init_top_menu(root, class_gui):
     top['menu'] = menu_bar
 
     sub_menu_file = Menu(menu_bar)
-    menu_bar.add_cascade(label=text_menu_top.file, menu=sub_menu_file)
-    sub_menu_file.add_command(label=text_menu_top.select_device, command=device.select_device_window)
-    sub_menu_file.add_command(label=text_menu_top.exit, command=class_gui.on_closing)
+    menu_bar.add_cascade(label=MenuTopText.file, menu=sub_menu_file)
+    sub_menu_file.add_command(label=MenuTopText.select_device, command=device.select_device_window)
+    sub_menu_file.add_command(label=MenuTopText.exit, command=class_gui.on_closing)
 
     sub_menu_settings = Menu(menu_bar)
-    menu_bar.add_cascade(label=text_menu_top.settings, menu=sub_menu_settings)
-    sub_menu_settings.add_command(label=text_menu_top.performance, command=settings.show)
-    sub_menu_settings.add_command(label=text_menu_top.about, command=about.show)
+    menu_bar.add_cascade(label=MenuTopText.settings, menu=sub_menu_settings)
+    sub_menu_settings.add_command(label=MenuTopText.performance, command=settings.show)
+    sub_menu_settings.add_command(label=MenuTopText.about, command=about.show)

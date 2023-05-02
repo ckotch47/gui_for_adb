@@ -20,12 +20,12 @@ def show():
 
     frame_info.pack(expand=1, padx=20, pady=(20, 0), fill='x', anchor='n')
 
-    Label(frame_info, text=text_settings.label_information).pack()
+    Label(frame_info, text=SettingText.label_information).pack()
 
     frame_adb = Frame(_root_settings)
     frame_adb.pack(expand=1, padx=20, pady=20, fill='x', anchor='n')
-    Label(frame_adb, text=text_settings.label_adb_select).pack(side='left')
-    Button(frame_adb, text=text_settings.change, command=select_folder).pack(side='right')
+    Label(frame_adb, text=SettingText.label_adb_select).pack(side='left')
+    Button(frame_adb, text=SettingText.change, command=select_folder).pack(side='right')
 
     config.read(cfg.get_path_config())
     temp_locale = config.get('DEFAULT', 'locale')
@@ -39,7 +39,7 @@ def show():
     # Create Dropdown menu
     frame_locale = Frame(_root_settings)
     frame_locale.pack(expand=1, padx=20, pady=0, fill='x', anchor='n')
-    Label(frame_locale, text=text_settings.label_locale_select).pack(side='left')
+    Label(frame_locale, text=SettingText.label_locale_select).pack(side='left')
     OptionMenu(frame_locale, locale_var, *app_locale, command=select_locale).pack(side='right')
 
     _root_settings.mainloop()

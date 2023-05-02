@@ -1,12 +1,12 @@
 """
 service for activiti gui
 """
-import subprocess
-import pyperclip
-
 from tkinter import messagebox
 from text.text_en import *
 from module.check_device import device
+
+import subprocess
+import pyperclip
 
 
 class ActivitiService:
@@ -29,7 +29,7 @@ class ActivitiService:
         """
         function for clean placeholder where user focused on input
         """
-        if self.input_query.get() == '' or self.input_query.get() == text_tab_one.placeholder_text:
+        if self.input_query.get() == '' or self.input_query.get() == ActivitiText.placeholder_text:
             self.input_query.delete(0, 'end')
             self.input_query.config(foreground='black')
 
@@ -40,7 +40,7 @@ class ActivitiService:
         if self.input_query.get() == '':
             self.input_query.delete(0, 'end')
             self.input_query.config(foreground='gray')
-            self.input_query.insert(0, text_tab_one.placeholder_text)
+            self.input_query.insert(0, ActivitiText.placeholder_text)
 
     def bind_placeholder(self, entry_search):
         """
@@ -49,7 +49,7 @@ class ActivitiService:
         self.input_query = entry_search
         self.input_query.delete(0, 'end')
         self.input_query.config(foreground='gray')
-        self.input_query.insert(0, text_tab_one.placeholder_text)
+        self.input_query.insert(0, ActivitiText.placeholder_text)
         entry_search.bind("<FocusIn>", self.clean_placeholder)
         entry_search.bind("<FocusOut>", self.show_placeholder)
 
@@ -67,8 +67,8 @@ class ActivitiService:
             next(iter(self.popen.stdout.readline, b""))
         except StopIteration:
             messagebox.showwarning(
-                main_text.warning_not_found_device.get('title'),
-                main_text.warning_not_found_device.get('text')
+                MainText.warning_not_found_device.get('title'),
+                MainText.warning_not_found_device.get('text')
             )
             return []
         return iter(self.popen.stdout.readline, b"")
@@ -88,21 +88,6 @@ class ActivitiService:
                                   values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], ''))
             else:
                 continue
-
-    @staticmethod
-    def return_value_from_string(str_is):
-        """
-        split str to dict
-        """
-        p = str(str_is).replace("b'", "").replace("'", "").split('\\')[0].split(' ')
-        return [x for x in p if x]
-
-    @staticmethod
-    def clear_all(tree):
-        """
-        clear table
-        """
-        tree.delete(*tree.get_children())
 
     def activiti_gui_refresh_btn(self):
         """
@@ -144,3 +129,18 @@ class ActivitiService:
         """"""
         event.widget.select_range(0, 'end')
         event.widget.icursor('end')
+
+    @staticmethod
+    def return_value_from_string(str_is):
+        """
+        split str to dict
+        """
+        p = str(str_is).replace("b'", "").replace("'", "").split('\\')[0].split(' ')
+        return [x for x in p if x]
+
+    @staticmethod
+    def clear_all(tree):
+        """
+        clear table
+        """
+        tree.delete(*tree.get_children())
