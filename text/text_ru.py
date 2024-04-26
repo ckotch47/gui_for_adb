@@ -60,8 +60,8 @@ class MenuTopText:
 
 class AboutGuiText:
     title = 'О программе'
-    text = 'gui for adb logcat \n' \
-           'Build on 2022 \n' \
+    text = 'Графическая оболочка для adb logcat \n' \
+           'Разработана в 2022 \n' \
            'Powered by ckotch47'
     github = 'https://github.com/ckotch47'
 
