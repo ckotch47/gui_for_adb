@@ -134,6 +134,7 @@ class LogGuiService:
                                       values=(temp_str[1], temp_str[2], temp_str[3],
                                               temp_str[4], temp_str[5], temp_str[6]))
                     self.table.yview_moveto(1)
+        temp=None
 
     # print log end
 

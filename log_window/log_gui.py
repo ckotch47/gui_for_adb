@@ -44,7 +44,7 @@ class LogGui:
         # init service
         self.service = tab_two_service.LogGuiService(table=self.table, text_box=self.msg_text)
 
-        self.setting_devices_list()
+        # self.setting_devices_list()
 
         # row 0
         self.settings_input()
